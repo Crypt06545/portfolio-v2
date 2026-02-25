@@ -5,7 +5,6 @@ const JsonContactCard = () => {
     "{",
     '  "status": "open_to_work",',
     '  "email": "fmehadi25@gmail.com",',
-    '  "phone": "+8801719550746",',
     '  "socials": {',
     '    "github": "@Crypt06545",',
     '    "linkedin": "@mehadihasan0",',
@@ -58,9 +57,15 @@ const JsonContactCard = () => {
     });
   };
 
-  return (
-    <Card className="h-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-xl sm:rounded-2xl overflow-hidden">
-      {/* Header */}
+return (
+    <Card
+      className="
+        bg-white/5 backdrop-blur-xl
+        border border-white/10
+        shadow-2xl rounded-xl sm:rounded-2xl
+        overflow-hidden
+      "
+    >
       <CardHeader className="flex flex-row justify-between items-center px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10">
         <div className="flex gap-1.5">
           <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500"></span>
@@ -72,8 +77,15 @@ const JsonContactCard = () => {
         </span>
       </CardHeader>
 
-      {/* JSON Content */}
-      <CardContent className="p-4 sm:p-5 md:p-6 font-mono text-[10px] sm:text-xs md:text-sm text-slate-200 space-y-1 overflow-x-auto">
+      <CardContent
+        className="
+          p-4 sm:p-5 md:p-6
+          font-mono text-[10px] sm:text-xs md:text-sm text-slate-200
+          h-[calc(100%-3.25rem)]   // header ≈ 3–3.5rem — tune if needed
+          overflow-y-auto
+          scrollbar-thin scrollbar-thumb-slate-600/70 scrollbar-track-transparent
+        "
+      >
         {jsonLines.map((line, index) => (
           <div key={index} className="flex gap-1.5 sm:gap-2">
             <span className="w-4 sm:w-5 md:w-6 text-slate-500 text-right select-none text-[9px] sm:text-xs">
@@ -88,5 +100,4 @@ const JsonContactCard = () => {
     </Card>
   );
 };
-
 export default JsonContactCard;
