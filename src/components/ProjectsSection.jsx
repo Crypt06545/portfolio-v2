@@ -394,10 +394,7 @@ export function ProjectsSection() {
 
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] sm:text-[11px] tracking-widest font-medium text-amber-300 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            SYSTEM.PROJECTS :: PORTFOLIO
-          </div>
+
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 flex items-center justify-center gap-2">
             <FolderKanban className="w-6 h-6 text-amber-400" />
             &lt;Featured_Work /&gt;

@@ -64,11 +64,19 @@ const HeroSection = () => {
 
           {/* CTA BUTTON */}
           <Button className="mt-2 cursor-pointer h-auto px-8 sm:px-10 md:px-12 py-2.5 sm:py-3 rounded-xl bg-amber-500/10 text-amber-300 font-semibold border border-amber-500/30 hover:bg-amber-500/20 hover:border-amber-400/50 transition text-sm sm:text-base">
-            Explore My Work <MousePointer2 className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+            Explore My Work{" "}
+            <MousePointer2 className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
+
+          {/* ARCH TAGLINE - More visible */}
+          <div className="mt-6 text-center md:text-left">
+            <span className="text-[10px] sm:text-[11px] font-mono text-slate-400 animate-pulse">
+              [user@archlinux ~]$ echo "I use Arch, btw" {">>"} ~/.bashrc
+            </span>
+          </div>
         </div>
 
-        {/* RIGHT SIDE - Fixed width issue */}
+        {/* RIGHT SIDE */}
         <div className="flex-1 md:flex-1 flex justify-center w-full">
           <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
             <EditorCard />

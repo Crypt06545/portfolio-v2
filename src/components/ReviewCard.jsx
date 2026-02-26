@@ -6,75 +6,13 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from "@/components/ui/tooltip";
-import {
-  Code2,
-  Globe,
-  Server,
-  Database,
-  GitBranch,
-  Terminal,
-  Zap,
-  Layers,
-  Layout,
-  Palette,
-  Cloud,
-  Shield,
-  Gauge,
-  Workflow,
-  Braces,
-  Binary,
-  Rocket,
-  Sparkles,
-  Cable,
-  Box,
-  Cpu,
-  Network
-} from "lucide-react";
-
-// Define missing icons
-const FlaskIcon = (props) => <Terminal {...props} />;
-const RadioIcon = (props) => <Zap {...props} />;
-
-const techSkills = [
-  // Frontend
-  { name: "React", icon: Code2, color: "#61DAFB", category: "Frontend", proficiency: 95 },
-  { name: "Next.js", icon: Globe, color: "#ffffff", category: "Frontend", proficiency: 90 },
-  { name: "TypeScript", icon: Braces, color: "#3178C6", category: "Language", proficiency: 90 },
-  { name: "JavaScript", icon: Binary, color: "#F7DF1E", category: "Language", proficiency: 95 },
-  { name: "HTML5", icon: Layout, color: "#E34F26", category: "Frontend", proficiency: 98 },
-  { name: "CSS3", icon: Palette, color: "#1572B6", category: "Frontend", proficiency: 95 },
-  { name: "Tailwind", icon: Sparkles, color: "#06B6D4", category: "Frontend", proficiency: 95 },
-  { name: "Redux", icon: Workflow, color: "#764ABC", category: "Frontend", proficiency: 85 },
-  { name: "Figma", icon: Layers, color: "#F24E1E", category: "Design", proficiency: 80 },
-  // Backend
-  { name: "Node.js", icon: Server, color: "#339933", category: "Backend", proficiency: 90 },
-  { name: "Express", icon: Cable, color: "#ffffff", category: "Backend", proficiency: 90 },
-  { name: "Python", icon: Terminal, color: "#3776AB", category: "Language", proficiency: 85 },
-  { name: "Django", icon: Shield, color: "#092E20", category: "Backend", proficiency: 80 },
-  { name: "Flask", icon: FlaskIcon, color: "#ffffff", category: "Backend", proficiency: 75 },
-  { name: "FastAPI", icon: Zap, color: "#009688", category: "Backend", proficiency: 80 },
-  { name: "GraphQL", icon: Network, color: "#E10098", category: "Backend", proficiency: 85 },
-  { name: "Socket.io", icon: RadioIcon, color: "#010101", category: "Backend", proficiency: 80 },
-  // Database
-  { name: "MongoDB", icon: Database, color: "#47A248", category: "Database", proficiency: 90 },
-  { name: "PostgreSQL", icon: Database, color: "#4169E1", category: "Database", proficiency: 85 },
-  { name: "DynamoDB", icon: Database, color: "#4053D6", category: "Database", proficiency: 75 },
-  { name: "Redis", icon: Database, color: "#DC382D", category: "Database", proficiency: 80 },
-  { name: "Prisma", icon: Database, color: "#2D3748", category: "Database", proficiency: 85 },
-  // DevOps & Tools
-  { name: "Git", icon: GitBranch, color: "#F05032", category: "Tools", proficiency: 95 },
-  { name: "GitHub Actions", icon: Workflow, color: "#2088FF", category: "DevOps", proficiency: 85 },
-  { name: "Docker", icon: Box, color: "#2496ED", category: "DevOps", proficiency: 80 },
-  { name: "Vercel", icon: Rocket, color: "#ffffff", category: "Deployment", proficiency: 90 },
-  { name: "Netlify", icon: Cloud, color: "#00C7B7", category: "Deployment", proficiency: 90 },
-  { name: "Jest", icon: Gauge, color: "#C21325", category: "Testing", proficiency: 80 },
-];
+import { techSkills } from "@/assets/techSkills";
 
 // Split into rows
 const firstRow = techSkills.slice(0, Math.ceil(techSkills.length / 2));
 const secondRow = techSkills.slice(Math.ceil(techSkills.length / 2));
 
-const TechCard = ({ name, icon: Icon, color, proficiency }) => {
+const TechCard = ({ name, icon, color, proficiency }) => {
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
@@ -93,9 +31,13 @@ const TechCard = ({ name, icon: Icon, color, proficiency }) => {
               style={{ backgroundColor: color }}
             />
             <div className="flex flex-col items-center justify-center h-full space-y-2">
-              <Icon
-                className="w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 group-hover:scale-110"
-                style={{ color }}
+              <img
+                src={icon}
+                alt={name}
+                className="w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 group-hover:scale-110 object-contain"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
               />
               <span className="text-xs font-mono text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 {name}
@@ -155,7 +97,6 @@ export function TechSkillsGrid() {
     <section className="px-4 sm:px-6 md:px-12 py-16 md:py-24">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10">
-          
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100">
             &lt;Tech_Stack /&gt;
           </h2>
@@ -180,8 +121,6 @@ export function TechSkillsGrid() {
           <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black via-transparent to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-black via-transparent to-transparent" />
         </div>
-
-        {/* Removed the filter pills section completely */}
 
         <style jsx="true">{`
           @keyframes wavy {

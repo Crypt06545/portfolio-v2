@@ -7,6 +7,14 @@ import {
   Github,
   Linkedin,
   ExternalLink,
+  Terminal,
+  User,
+  Cpu,
+  HardDrive,
+  Wifi,
+  Activity,
+  TerminalIcon,
+  FolderKanban,
 } from "lucide-react";
 
 const AboutSection = () => {
@@ -23,159 +31,210 @@ const AboutSection = () => {
   return (
     <section className="px-4 sm:px-6 md:px-12 py-16 md:py-24">
       <div className="max-w-4xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] sm:text-[11px] tracking-widest font-medium text-amber-300 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            SYSTEM.ABOUT :: USER_PROFILE
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100">
-            # About.system
+        {/* Section Header - Arch style but with original colors */}
+          <h2 className="mb-6 text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 flex items-center justify-center gap-2">
+            <Terminal className="w-6 h-6 text-amber-400" />
+            &lt;About_System /&gt;
           </h2>
-        </div>
 
-        {/* Main Card */}
+        {/* Main Card - Arch terminal style but with original colors */}
         <Card className="w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-xl sm:rounded-2xl overflow-hidden">
-          {/* Card Header */}
-          <CardHeader className="flex flex-row justify-between items-center px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10">
+          {/* Card Header - Terminal window style */}
+          <CardHeader className="flex flex-row justify-between items-center px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 bg-black/20">
             <div className="flex gap-1.5">
               <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500"></span>
               <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500"></span>
               <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500"></span>
             </div>
-            <span className="text-[10px] sm:text-xs text-slate-400 font-mono truncate ml-2">
-              about_system
-            </span>
+            <div className="flex items-center gap-2">
+              <Terminal className="w-3 h-3 text-amber-400" />
+              <span className="text-[10px] sm:text-xs text-slate-400 font-mono truncate ml-2">
+                user@archlinux:~/about
+              </span>
+            </div>
           </CardHeader>
 
           {/* Content */}
-          <CardContent className="p-5 sm:p-6 md:p-8">
-            {/* System Avatar */}
-            <div className="text-center mb-6">
-              <span className="text-xs text-amber-400/70 font-mono">
-                System Avatar
-              </span>
+          <CardContent className="p-5 sm:p-6 md:p-8 relative">
+            {/* Arch grid background - subtle */}
+            <div className="absolute inset-0 opacity-5 pointer-events-none">
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 20 L80 20 L80 80 L20 80 Z' stroke='%23ffffff' fill='none' stroke-width='1'/%3E%3C/svg%3E")`,
+                  backgroundSize: "30px 30px",
+                }}
+              />
             </div>
 
-            {/* Profile Info Grid */}
-            <div className="space-y-3 font-mono text-sm border border-white/5 rounded-lg p-4 bg-black/20 mb-6">
-              <div className="grid grid-cols-3 gap-2 text-xs sm:text-sm">
-                <span className="text-amber-400">OPERATOR</span>
-                <span className="text-slate-200 col-span-2">
-                  {userData.name}
+            {/* System Info - neofetch style with original colors */}
+            <div className="relative z-10">
+              {/* Terminal prompt */}
+              <div className="flex items-center gap-2 mb-6 font-mono text-xs text-slate-400">
+                <span className="text-amber-400">$</span>
+                <span>neofetch --full</span>
+              </div>
+
+              {/* Profile Info Grid - system info style */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {/* ASCII Avatar Column - using Arch style but with original colors */}
+                <div className="font-mono text-amber-400/40 text-[8px] leading-none whitespace-pre border border-white/10 rounded-lg p-3 bg-black/30">
+                  {`     .--.
+                    .'_\\/_'.
+                    '. /\\ .'
+                      "||"
+        .____.    .--. || .--.
+       / .-.  \\  / . \\||/ . \\
+      |/   \\  ||| { } ||{ } |
+            \\ ||| { } ||{ } |
+            / ||| '_' || '_' |
+       .-' /  ||\\___/ ||\\___/|
+      '--'   '-'
+      `}
+                </div>
+
+                {/* System Details - with original colors */}
+                <div className="md:col-span-2 space-y-2 font-mono text-xs sm:text-sm bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="grid grid-cols-4 gap-2 pb-2 border-b border-white/10">
+                    <span className="text-amber-400">OPERATOR:</span>
+                    <span className="text-slate-200 col-span-3 flex items-center gap-1">
+                      <User className="w-3 h-3 text-emerald-400" />
+                      {userData.name}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-2 pb-2 border-b border-white/10">
+                    <span className="text-amber-400">ROLE:</span>
+                    <span className="text-cyan-300 col-span-3">
+                      FULL_STACK_DEVELOPER
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-2 pb-2 border-b border-white/10">
+                    <span className="text-amber-400">HOSTNAME:</span>
+                    <span className="text-slate-200 col-span-3 flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-emerald-400" />
+                      {userData.location}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-2 pb-2 border-b border-white/10">
+                    <span className="text-amber-400">KERNEL:</span>
+                    <span className="text-slate-200 col-span-3">
+                      continuous-learning
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-2">
+                    <span className="text-amber-400">STATUS:</span>
+                    <span className="flex items-center gap-2 col-span-3">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <span className="text-emerald-400">OPEN</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* user_profile.log - terminal style with original colors */}
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2 font-mono text-xs">
+                  <span className="text-amber-400">$</span>
+                  <span className="text-cyan-400">cat</span>
+                  <span className="text-purple-400">user_profile.log</span>
+                </div>
+                <div className="bg-black/40 rounded-md p-4 font-mono text-xs sm:text-sm border border-white/10">
+                  <div className="flex items-center gap-2 text-emerald-400 mb-3">
+                    <Activity className="w-3 h-3" />
+                    <span>[ whoami ]</span>
+                  </div>
+                  <p className="text-slate-300 text-xs sm:text-sm leading-relaxed pl-4 border-l-2 border-amber-500/30">
+                    Passionate full-stack developer with expertise in modern web
+                    technologies. I specialize in creating robust, scalable
+                    applications that solve real-world problems.
+                  </p>
+                </div>
+              </div>
+
+              {/* mission.txt - terminal style with original colors */}
+              <div className="mb-8">
+                <div className="flex items-center gap-2 mb-2 font-mono text-xs">
+                  <span className="text-amber-400">$</span>
+                  <span className="text-cyan-400">cat</span>
+                  <span className="text-pink-400">mission.txt</span>
+                </div>
+                <div className="bg-black/40 rounded-md p-4 font-mono text-xs sm:text-sm border border-white/10">
+                  <div className="flex items-center gap-2 text-emerald-400 mb-3">
+                    <Cpu className="w-3 h-3" />
+                    <span>[ current_mission ]</span>
+                  </div>
+                  <p className="text-slate-300 text-xs sm:text-sm leading-relaxed pl-4 border-l-2 border-amber-500/30">
+                    Translating complex business requirements into robust
+                    technical solutions. Currently focused on Microservices,
+                    Real-time Systems, and AI Integration.
+                  </p>
+                </div>
+              </div>
+
+              {/* Stats Row - system monitor style but with original colors */}
+              <div className="grid grid-cols-3 gap-4 text-center border-t border-white/10 pt-6">
+                {/* Experience */}
+                <div className="space-y-2">
+                  <div className="text-2xl sm:text-3xl font-bold text-amber-400 font-mono">
+                    4+
+                  </div>
+                  <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-slate-400">
+                    <Cpu className="w-3 h-3" />
+                    <span>CPU::YEARS</span>
+                  </div>
+                  <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-amber-400 rounded-full"
+                      style={{ width: "80%" }}
+                    />
+                  </div>
+                </div>
+
+                {/* Projects */}
+                <div className="space-y-2">
+                  <div className="text-2xl sm:text-3xl font-bold text-cyan-400 font-mono">
+                    50+
+                  </div>
+                  <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-slate-400">
+                    <HardDrive className="w-3 h-3" />
+                    <span>MEM::PROJECTS</span>
+                  </div>
+                  <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-cyan-400 rounded-full"
+                      style={{ width: "95%" }}
+                    />
+                  </div>
+                </div>
+
+                {/* Caffeine */}
+                <div className="space-y-2">
+                  <div className="text-2xl sm:text-3xl font-bold text-emerald-400 font-mono">
+                    ∞
+                  </div>
+                  <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-slate-400">
+                    <Wifi className="w-3 h-3" />
+                    <span>NET::CAFFEINE</span>
+                  </div>
+                  <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-400 rounded-full animate-pulse"
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Arch tagline - subtle */}
+              <div className="mt-4 text-center">
+                <span className="text-[8px] font-mono text-slate-500/30 animate-pulse">
+                  [user@archlinux ~]$ echo "I use Arch, btw" {">>"} ~/.bashrc
                 </span>
               </div>
-
-              <div className="grid grid-cols-3 gap-2 text-xs sm:text-sm">
-                <span className="text-amber-400">ROLE</span>
-                <span className="text-cyan-300 col-span-2">
-                  FULL_STACK_SOFTWARE_ENGINEER
-                </span>
-              </div>
-
-              <div className="grid grid-cols-3 gap-2 text-xs sm:text-sm">
-                <span className="text-amber-400">LOCATION</span>
-                <span className="text-slate-200 col-span-2 flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-emerald-400" />
-                  {userData.location}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-3 gap-2 text-xs sm:text-sm">
-                <span className="text-amber-400">STATUS</span>
-                <span className="flex items-center gap-2 col-span-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span className="text-emerald-400 font-medium">OPEN</span>
-                </span>
-              </div>
-            </div>
-
-            {/* user_profile.log */}
-            <div className="mb-6">
-              <p className="text-xs text-slate-500 font-mono mb-2">
-                user_profile.log
-              </p>
-              <div className="bg-black/40 rounded-md p-4 font-mono text-xs sm:text-sm">
-                <p className="text-emerald-400 mb-2">➜ whoami</p>
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  Passionate full-stack developer with expertise in modern web
-                  technologies. I specialize in creating robust, scalable
-                  applications that solve real-world problems.
-                </p>
-              </div>
-            </div>
-
-            {/* mission.txt */}
-            <div className="mb-8">
-              <div className="bg-black/40 rounded-md p-4 font-mono text-xs sm:text-sm">
-                <p className="text-emerald-400 mb-2">➜ cat mission.txt</p>
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  Translating complex business requirements into robust
-                  technical solutions. Currently focused on Microservices,
-                  Real-time Systems, and AI Integration.
-                </p>
-              </div>
-            </div>
-
-            {/* Stats Row */}
-            <div className="grid grid-cols-3 gap-4 text-center border-t border-white/10 pt-6">
-              {/* Experience */}
-              <div className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-bold text-amber-400 font-mono">
-                  4+
-                </div>
-                <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-slate-400">
-                  <Briefcase className="w-3 h-3" />
-                  <span>YRS EXP</span>
-                </div>
-              </div>
-
-              {/* Projects */}
-              <div className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-bold text-cyan-400 font-mono">
-                  50+
-                </div>
-                <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-slate-400">
-                  <Database className="w-3 h-3" />
-                  <span>PROJECTS</span>
-                </div>
-              </div>
-
-              {/* Caffeine */}
-              <div className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-bold text-emerald-400 font-mono">
-                  ∞
-                </div>
-                <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-slate-400">
-                  <Coffee className="w-3 h-3" />
-                  <span>CAFFEINE</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div className="flex justify-center gap-4 mt-6 pt-4 border-t border-white/10">
-              <a
-                href="#"
-                className="flex items-center gap-1 text-xs text-slate-400 hover:text-amber-300 transition"
-              >
-                <Github className="w-4 h-4" />
-                <span>{userData.github}</span>
-              </a>
-              <a
-                href="#"
-                className="flex items-center gap-1 text-xs text-slate-400 hover:text-amber-300 transition"
-              >
-                <Linkedin className="w-4 h-4" />
-                <span>{userData.linkedin}</span>
-              </a>
-              <a
-                href="#"
-                className="flex items-center gap-1 text-xs text-slate-400 hover:text-amber-300 transition"
-              >
-                <ExternalLink className="w-4 h-4" />
-                <span>Portfolio</span>
-              </a>
             </div>
           </CardContent>
         </Card>

@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import AboutSection from "./components/AboutSection";
 import { TechSkillsGrid } from "./components/ReviewCard";
 import { ProjectsSection } from "./components/ProjectsSection";
+import { EnvironmentSection } from "./components/EnvironmentSection";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <HeroSection />
         <AboutSection />
         <TechSkillsGrid />
+        {/* <EnvironmentSection/> */}
         <ProjectsSection/>
         <ContactSection />
         <Footer />
