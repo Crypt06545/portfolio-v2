@@ -9,7 +9,7 @@ import { TechSkillsGrid } from "./components/ReviewCard";
 
 import Navbar from "./components/Navbar";
 import ProjectsSection from "./components/ProjectsSection";
-import { EnvironmentSection } from "./components/EnvironmentSection";
+
 
 function App() {
   return (

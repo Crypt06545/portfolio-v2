@@ -58,12 +58,22 @@ export default project;`;
             <span className="text-xs">{project.stars}</span>
           </div>
           <div className="flex gap-1">
-            <button className="p-1 hover:bg-white/10 rounded transition-colors">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-1 hover:bg-white/10 rounded transition-colors inline-block"
+            >
               <Github className="w-4 h-4 text-slate-400" />
-            </button>
-            <button className="p-1 hover:bg-white/10 rounded transition-colors">
+            </a>
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-1 hover:bg-white/10 rounded transition-colors inline-block"
+            >
               <ExternalLink className="w-4 h-4 text-slate-400" />
-            </button>
+            </a>
           </div>
         </div>
       </CardContent>

@@ -11,7 +11,7 @@ const TerminalCard = ({ project }) => {
     amber: "text-amber-400 border-amber-500/30",
     cyan: "text-cyan-400 border-cyan-500/30",
     emerald: "text-emerald-400 border-emerald-500/30",
-    purple: "text-purple-400 border-purple-500/30"
+    purple: "text-purple-400 border-purple-500/30",
   }[project.accent];
 
   return (
@@ -19,7 +19,7 @@ const TerminalCard = ({ project }) => {
       className={cn(
         "group relative overflow-hidden bg-black/40 backdrop-blur-xl border-white/10",
         "hover:border-white/20 transition-all duration-500",
-        "hover:shadow-2xl hover:shadow-black/50 hover:-translate-y-2"
+        "hover:shadow-2xl hover:shadow-black/50 hover:-translate-y-2",
       )}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -31,7 +31,9 @@ const TerminalCard = ({ project }) => {
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
           <span className="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
         </div>
-        <span className="text-xs font-mono text-slate-500 ml-2">~/projects/{project.title.toLowerCase()}</span>
+        <span className="text-xs font-mono text-slate-500 ml-2">
+          ~/projects/{project.title.toLowerCase()}
+        </span>
       </div>
 
       <CardContent className="p-5">
@@ -49,13 +51,15 @@ const TerminalCard = ({ project }) => {
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-slate-400 font-mono mb-4 leading-relaxed">
+        {/* Description - Truncated by word count */}
+        <p className="text-sm text-slate-400 font-mono mb-4 leading-relaxed line-clamp-2">
           {project.description}
         </p>
-
         {/* Tech Stack - Terminal Style */}
         <div className="space-y-2 mb-4">
-          <div className="text-xs text-slate-500 font-mono">$ npm list --depth=0</div>
+          <div className="text-xs text-slate-500 font-mono">
+            $ npm list --depth=0
+          </div>
           <div className="flex flex-wrap gap-2">
             {project.tech.map((tech) => (
               <span
@@ -63,7 +67,7 @@ const TerminalCard = ({ project }) => {
                 className={cn(
                   "px-2 py-1 text-xs font-mono rounded",
                   "bg-white/5 border border-white/10",
-                  "text-slate-300"
+                  "text-slate-300",
                 )}
               >
                 {tech}
@@ -102,18 +106,24 @@ const TerminalCard = ({ project }) => {
           <Button
             variant="ghost"
             size="sm"
-            className="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 font-mono text-xs"
+            asChild
+            className="flex-1 cursor-pointer bg-white/5 hover:bg-amber-500/20 hover:text-amber-400 hover:border-amber-500/30 text-slate-300 border border-white/10 font-mono text-xs"
           >
-            <Github className="w-3 h-3 mr-1" />
-            <span>git clone</span>
+            <a href={project.github} target="_blank" rel="noopener noreferrer">
+              <Github className="w-3 h-3 mr-1" />
+              <span>git clone</span>
+            </a>
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 font-mono text-xs"
+            asChild
+            className="flex-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-400 hover:border-emerald-500/30 text-slate-300 border border-white/10 font-mono text-xs"
           >
-            <ExternalLink className="w-3 h-3 mr-1" />
-            <span>npm run demo</span>
+            <a href={project.live} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="w-3 h-3 mr-1" />
+              <span>npm run demo</span>
+            </a>
           </Button>
         </div>
 
