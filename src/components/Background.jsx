@@ -3,12 +3,10 @@ import React from "react";
 const Background = ({ children }) => {
   return (
     <>
-      <div
-        className="fixed inset-0 -z-10 pointer-events-none bg-black"
-        aria-hidden="true"
-      >
+      <div className="relative min-h-screen w-full bg-black">
+        {/* Fixed White Spotlight Background */}
         <div
-          className="absolute inset-0"
+          className="fixed inset-0 z-0 pointer-events-none"
           style={{
             background: `
               radial-gradient(
@@ -20,10 +18,11 @@ const Background = ({ children }) => {
             `,
           }}
         />
+        {/* Scrollable Content */}
+        <div className="relative z-10 min-h-screen">
+          {children}
+        </div>
       </div>
-
-      {/* Scrollable content */}
-      <div className="relative min-h-screen">{children}</div>
     </>
   );
 };
