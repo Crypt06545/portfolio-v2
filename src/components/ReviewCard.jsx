@@ -42,7 +42,7 @@ const TechCard = ({ name, icon, color, proficiency }) => {
               <span className="text-xs font-mono text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 {name}
               </span>
-              <svg className="absolute top-1 right-1 w-6 h-6 rotate-[-90deg]">
+              <svg className="absolute top-1 right-1 w-6 h-6 -rotate-90">
                 <circle
                   cx="12"
                   cy="12"
@@ -66,7 +66,7 @@ const TechCard = ({ name, icon, color, proficiency }) => {
               </svg>
             </div>
             <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-transparent to-emerald-500/20 animate-pulse" />
+              <div className="absolute inset-0 bg-linear-to-r from-amber-500/20 via-transparent to-emerald-500/20 animate-pulse" />
             </div>
           </figure>
         </TooltipTrigger>
@@ -118,8 +118,8 @@ export function TechSkillsGrid() {
             ))}
           </Marquee>
 
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black via-transparent to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-black via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r from-black via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l from-black via-transparent to-transparent" />
         </div>
 
         <style jsx="true">{`

@@ -6,20 +6,21 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import AboutSection from "./components/AboutSection";
 import { TechSkillsGrid } from "./components/ReviewCard";
-import { ProjectsSection } from "./components/ProjectsSection";
-import { EnvironmentSection } from "./components/EnvironmentSection";
+
 import Navbar from "./components/Navbar";
+import ProjectsSection from "./components/ProjectsSection";
+import { EnvironmentSection } from "./components/EnvironmentSection";
 
 function App() {
   return (
     <>
       <Background>
-        <Navbar/>
+        <Navbar />
         <HeroSection />
         <AboutSection />
         <TechSkillsGrid />
         {/* <EnvironmentSection/> */}
-        <ProjectsSection/>
+        <ProjectsSection />
         <ContactSection />
         <Footer />
       </Background>
