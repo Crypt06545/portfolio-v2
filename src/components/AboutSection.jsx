@@ -29,7 +29,7 @@ const AboutSection = () => {
   };
 
   return (
-    <section className="px-4 sm:px-6 md:px-12 py-16 md:py-24">
+    <section id="about" className="px-4 sm:px-6 md:px-12 py-16 md:py-24">
       <div className="max-w-4xl mx-auto">
         {/* Section Header - Arch style but with original colors */}
           <h2 className="mb-6 text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 flex items-center justify-center gap-2">

@@ -8,11 +8,13 @@ import AboutSection from "./components/AboutSection";
 import { TechSkillsGrid } from "./components/ReviewCard";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { EnvironmentSection } from "./components/EnvironmentSection";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <>
       <Background>
+        <Navbar/>
         <HeroSection />
         <AboutSection />
         <TechSkillsGrid />

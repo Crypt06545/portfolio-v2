@@ -389,7 +389,7 @@ export function ProjectsSection() {
   const [cardStyle, setCardStyle] = useState("terminal");
 
   return (
-    <section className="px-4 sm:px-6 md:px-12 py-16 md:py-24">
+    <section id="work" className="px-4 sm:px-6 md:px-12 py-16 md:py-24">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
