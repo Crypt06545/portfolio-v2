@@ -5,7 +5,7 @@ const userData = {
   email: "fmehadi25@gmail.com",
   github: "@Crypt06545",
   linkedin: "@mehadihasan0",
-  portfolio: "https://mehadi.onrender.com/",
+  portfolio: "https://mehadi.onrender.com",
   location: "Bogura Sadar, Bogura",
 };
 

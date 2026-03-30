@@ -1,18 +1,16 @@
-import { Home, User, Briefcase, Mail, Menu, X } from "lucide-react";
+import { Home, User, Briefcase, Mail } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
 
-      // Update active section based on scroll position
       const sections = ["home", "about", "work", "contact"];
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 150;
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -39,15 +37,15 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Desktop Navbar - Top (hidden on mobile) */}
+      {/* Desktop Navbar */}
       <nav
-        className={`hidden sm:block fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${
+        className={`hidden sm:block fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
           scrolled
-            ? "w-[95%] sm:w-95 py-1 bg-black/80 backdrop-blur-lg shadow-lg"
-            : "w-[95%] sm:w-105 py-1.5 bg-black/50 backdrop-blur-sm"
-        } rounded-full border border-white/10`}
+            ? "w-auto px-2 py-1.5 bg-white/5 backdrop-blur-md border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.3)]"
+            : "w-auto px-4 py-2 bg-transparent border-transparent"
+        } rounded-full border`}
       >
-        <div className="flex items-center justify-center gap-1 px-2">
+        <div className="flex items-center justify-center gap-1 sm:gap-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeSection === item.section;
@@ -56,25 +54,23 @@ const Navbar = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${
                   isActive
-                    ? "text-amber-400 bg-amber-500/10"
-                    : "text-slate-400 hover:text-amber-300 hover:bg-white/5"
+                    ? "text-amber-400 bg-amber-400/10 shadow-[0_0_15px_rgba(251,191,36,0.1)]"
+                    : "text-slate-400 hover:text-slate-100"
                 }`}
               >
-                <Icon className={`${scrolled ? "w-3.5 h-3.5" : "w-4 h-4"} transition-all duration-300`} />
-                <span className={`${scrolled ? "text-xs" : "text-sm"} font-medium transition-all duration-300`}>
-                  {item.name}
-                </span>
+                <Icon className={`${scrolled ? "w-4 h-4" : "w-5 h-5"} transition-all`} />
+                <span className="text-sm font-medium">{item.name}</span>
               </a>
             );
           })}
         </div>
       </nav>
 
-      {/* Mobile Bottom Navigation - Only visible on mobile */}
-      <nav className="sm:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[90%] bg-black/80 backdrop-blur-lg rounded-full border border-white/10 shadow-lg">
-        <div className="flex items-center justify-around py-1.5 px-1">
+      {/* Mobile Bottom Navigation */}
+      <nav className="sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[85%] bg-white/5 backdrop-blur-xl rounded-full border border-white/10 shadow-2xl">
+        <div className="flex items-center justify-around py-2 px-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeSection === item.section;
@@ -83,25 +79,18 @@ const Navbar = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className={`p-2.5 rounded-full transition-all duration-300 ${
+                className={`p-3 rounded-full transition-all duration-300 ${
                   isActive
-                    ? "text-amber-400 bg-amber-500/10"
-                    : "text-slate-400 hover:text-amber-300"
+                    ? "text-amber-400 bg-amber-400/10"
+                    : "text-slate-400"
                 }`}
-                aria-label={item.name}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-6 h-6" />
               </a>
             );
           })}
         </div>
       </nav>
-
-      {/* Desktop spacer */}
-      <div className="hidden sm:block h-16"></div>
-
-      {/* Mobile spacer */}
-      <div className="sm:hidden h-20"></div>
     </>
   );
 };

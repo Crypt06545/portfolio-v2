@@ -14,6 +14,8 @@ const ContactFormCard = () => {
     email: "",
     message: "",
   });
+
+
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
 
@@ -27,7 +29,33 @@ const ContactFormCard = () => {
   };
   const handleSubmit = async () => {
     setIsSending(true);
+        // send data to formspree
+        // try {
+        //     const response = await fetch('https://formspree.io/f/mrgddpor', {
+        //         method: 'POST',
+        //         headers: {
+        //             "Accept": "application/json"
+        //         },
+        //         body: JSON.stringify(data)
+        //     });
+        //     const json = await response.json();
+        //     setLoading(false);
+        //     // all ok reset state, not 'ok' show error alert
+        //     if (json.ok) {
+        //         showSuccessMessage({ title: t("contact.alerts.success") });
+        //         setData({
+        //             name: '',
+        //             email: '',
+        //             message: ''
+        //         });
+        //     }
+        //     else showErrorMessage({ title: '', text: t("contact.alerts.error") });
 
+        // } catch (error) {
+        //     setLoading(false);
+        //     console.log('error sending email', error);
+        //     showErrorMessage({ title: '', text: t("contact.alerts.error") });
+        // }
     // Simulate API call
     setTimeout(() => {
       setIsSending(false);
