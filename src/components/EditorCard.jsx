@@ -1,97 +1,155 @@
-import * as React from 'react'; // Changed for better optimization
+import * as React from 'react';
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FolderGit2, Play } from "lucide-react";
 
-// 1. Move Regex outside to avoid re-compilation on every render
-const CODE_REGEX = /(\b(?:const|return|import|from)\b|true|false|null|"[^"]*"|'[^']*'|<[A-Za-z][\w$]*|<\/[A-Za-z][\w$]*>|<\/?>|\{|\}|\[|\]|\(|\)|\.[a-zA-Z_$][\w$]*\(|=[^{}[\]"' ]*)/g;
+const LINES = [
+  { text: "// Welcome to my workspace", type: "comment" },
+  { text: "import { Developer } from './universe';", type: "import" },
+  { text: "", type: "empty" },
+  { text: "const Portfolio = () => {", type: "keyword" },
+  { text: "  return (", type: "normal" },
+  { text: "    <Developer", type: "jsx" },
+  { text: '      name="Mehadi Hasan"', type: "string" },
+  { text: '      role="Full Stack Developer"', type: "string" },
+  { text: '      skills={["React", "Node", "MongoDB"]}', type: "string" },
+  { text: "      passionate={true}", type: "bool" },
+  { text: "    />", type: "jsx" },
+  { text: "  );", type: "normal" },
+  { text: "};", type: "normal" },
+  { text: "developer.build();", type: "call" },
+];
 
-const highlightCode = (line) => {
-  if (!line.trim()) return line;
-  if (line.trim().startsWith("//")) {
-    return <span className="text-slate-500 italic">{line}</span>;
-  }
+const TOKEN_COLORS = {
+  comment: "text-slate-500 italic",
+  import: "text-violet-400",
+  keyword: "text-pink-400",
+  jsx: "text-cyan-400 font-semibold",
+  string: "text-amber-300",
+  bool: "text-emerald-400",
+  call: "text-cyan-300",
+  normal: "text-slate-300",
+  empty: "",
+};
 
-  const parts = line.split(CODE_REGEX);
+const useTypewriter = (lines, charDelay = 22, lineDelay = 60) => {
+  const [displayedLines, setDisplayedLines] = React.useState(
+    lines.map(() => ({ text: "", done: false }))
+  );
+  const stateRef = React.useRef({ lineIdx: 0, charIdx: 0, raf: null });
 
-  return parts.filter(Boolean).map((part, i) => {
-    if (/^\s+$/.test(part)) return part;
-    if (/^(const|return|import|from)$/.test(part)) return <span key={i} className="text-pink-400 font-medium">{part}</span>;
-    if (/^["'].*["']$/.test(part)) return <span key={i} className="text-orange-300">{part}</span>;
-    if (/^(true|false|null)$/.test(part)) return <span key={i} className="text-emerald-400">{part}</span>;
-    if (/^<[A-Za-z][\w$]*\/?$/.test(part) || part === "/>" || /^<\/[A-Za-z][\w$]*>$/.test(part)) {
-      return <span key={i} className="text-cyan-400 font-medium">{part}</span>;
-    }
-    if (/^[{}[\]()]$/.test(part) || part === "=") return <span key={i} className="text-violet-300">{part}</span>;
-    if (/^\.[a-zA-Z_$][\w$]*\($/.test(part) || /^[A-Z][a-zA-Z]*$/.test(part)) {
-      return <span key={i} className="text-cyan-300 font-medium">{part}</span>;
-    }
-    return <span key={i} className="text-slate-200">{part}</span>;
-  });
+  React.useEffect(() => {
+    const state = stateRef.current;
+
+    const tick = () => {
+      const { lineIdx, charIdx } = state;
+      if (lineIdx >= lines.length) return;
+
+      const currentLine = lines[lineIdx].text;
+
+      if (charIdx <= currentLine.length) {
+        setDisplayedLines(prev => {
+          const next = [...prev];
+          next[lineIdx] = { text: currentLine.slice(0, charIdx), done: false };
+          return next;
+        });
+        state.charIdx++;
+        state.raf = setTimeout(tick, charDelay);
+      } else {
+        // Mark line done, move to next
+        setDisplayedLines(prev => {
+          const next = [...prev];
+          next[lineIdx] = { text: currentLine, done: true };
+          return next;
+        });
+        state.lineIdx++;
+        state.charIdx = 0;
+        state.raf = setTimeout(tick, lineDelay);
+      }
+    };
+
+    state.raf = setTimeout(tick, 400);
+    return () => clearTimeout(state.raf);
+  }, [charDelay, lineDelay, lines]);
+
+  return displayedLines;
 };
 
 const EditorCard = () => {
-    const handleScroll = () => {
-    const element = document.getElementById("work");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+  const displayedLines = useTypewriter(LINES, 20, 50);
+  const activeLineIdx = displayedLines.findLastIndex(l => !l.done && l.text.length > 0);
+
+  const handleScroll = () => {
+    document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
   };
-  // 2. Memoize the static code lines so highlighting happens ONLY ONCE
-  const renderedLines = React.useMemo(() => {
-    const lines = [
-      "// Welcome to my workspace",
-      "import { Developer } from './universe';",
-      "",
-      "const Portfolio = () => {",
-      "  return (",
-      "    <Developer",
-      '      name="Mehadi Hasan"',
-      '      role="Full Stack Developer"',
-      '      skills=["React", "Node", "MongoDB"]',
-      "      passionate={true}",
-      "    />",
-      "  );",
-      "};",
-      "developer.build();",
-    ];
-    return lines.map((line, index) => ({
-      id: index,
-      content: highlightCode(line)
-    }));
-  }, []);
 
   return (
-    <Card className="w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-xl sm:rounded-2xl overflow-hidden transform-gpu will-change-transform">
-      {/* Header */}
-      <CardHeader className="flex flex-row justify-between items-center px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10">
+    <Card className="w-full bg-white/5  backdrop-blur-xl border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.07)] rounded-xl overflow-hidden">
+      {/* Editor chrome */}
+      <CardHeader className="flex flex-row justify-between items-center px-4 py-3 border-b  border-white/10">
         <div className="flex gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]"></span>
-          <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]"></span>
-          <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]"></span>
+          <span className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-[0_0_6px_#ff5f56]"></span>
+          <span className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-[0_0_6px_#ffbd2e]"></span>
+          <span className="w-3 h-3 rounded-full bg-[#27c93f] shadow-[0_0_6px_#27c93f]"></span>
         </div>
-        <span className="text-[10px] sm:text-xs text-slate-400 font-mono">portfolio.tsx</span>
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-amber-400/60 animate-pulse"></span>
+          <span className="text-[11px] text-slate-400 font-mono tracking-wide">portfolio.tsx</span>
+        </div>
+        <div className="text-[10px] text-slate-600 font-mono">TSX</div>
       </CardHeader>
 
-      {/* Content - Optimized with static rendering */}
-      <CardContent className="p-3 sm:p-5 font-mono text-[10px] sm:text-xs md:text-sm text-slate-200 space-y-1 overflow-x-auto min-h-[300px]">
-        {renderedLines.map((line) => (
-          <div key={line.id} className="flex gap-3">
-            <span className="w-6 text-slate-600 text-right select-none">{line.id + 1}</span>
-            <span className="whitespace-pre flex-1">{line.content}</span>
+      {/* Code content */}
+      <CardContent className="p-0 font-mono text-[11px] sm:text-xs min-h-[300px] ">
+        <div className="flex">
+          {/* Line numbers gutter */}
+          <div className="flex flex-col pt-4 pb-4 px-3 border-r border-white/5 select-none min-w-[2.5rem] text-right">
+            {LINES.map((_, i) => (
+              <div key={i} className={`h-6 text-[10px] leading-6 ${i === activeLineIdx ? 'text-amber-400/70' : 'text-slate-700'}`}>
+                {i + 1}
+              </div>
+            ))}
           </div>
-        ))}
+
+          {/* Code lines */}
+          <div className="flex-1 pt-4 pb-4 px-4 space-y-0 overflow-x-auto">
+            {LINES.map((line, i) => {
+              const display = displayedLines[i];
+              const isActive = i === activeLineIdx;
+              return (
+                <div
+                  key={i}
+                  className={`h-6 flex items-center leading-6 ${isActive ? 'bg-amber-500/5 rounded' : ''}`}
+                >
+                  <span className={`whitespace-pre ${TOKEN_COLORS[line.type] || 'text-slate-300'}`}>
+                    {display?.text || ''}
+                  </span>
+                  {isActive && (
+                    <span className="ml-px w-[2px] h-[14px] bg-amber-400 animate-[blink_1s_step-end_infinite] inline-block align-middle" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </CardContent>
 
       {/* Footer */}
-      <CardFooter className="flex flex-col sm:flex-row gap-3 p-4 md:p-6">
-        <Button className="w-full sm:w-auto bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 active:scale-95 transition-all">
-          <Play className="w-4 h-4 mr-2" /> Run Profile
+      <CardFooter className="flex flex-col sm:flex-row gap-3 p-4 border-t border-white/8 ">
+        <Button className="w-full sm:w-auto bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 hover:shadow-[0_0_20px_rgba(251,191,36,0.2)] active:scale-95 transition-all duration-200 font-mono text-xs">
+          <Play className="w-3.5 h-3.5 mr-2" /> Run Profile
         </Button>
-        <Button onClick={handleScroll} className="w-full sm:w-auto bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 active:scale-95 transition-all">
-          <FolderGit2 className="w-4 h-4 mr-2" /> View Projects
+        <Button onClick={handleScroll} className="w-full sm:w-auto bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_20px_rgba(52,211,153,0.2)] active:scale-95 transition-all duration-200 font-mono text-xs">
+          <FolderGit2 className="w-3.5 h-3.5 mr-2" /> View Projects
         </Button>
       </CardFooter>
+
+      <style>{`
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+      `}</style>
     </Card>
   );
 };

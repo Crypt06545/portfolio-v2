@@ -1,168 +1,99 @@
+import * as React from 'react'; // Changed for better optimization
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { FolderGit2, Play } from "lucide-react";
 
-const EditorCard = () => {
-  const codeLines = [
-    "// Welcome to my workspace",
-    "import { Developer } from './universe';",
-    "",
-    "const Portfolio = () => {",
-    "  return (",
-    "    <Developer",
-    '      name="Mehadi Hasan"',
-    '      role="Full Stack Developer"',
-    '      skills=["React", "Node", "MongoDB"]',
-    '      passionate={true}',
-    "    />",
-    "  );",
-    "};",
-    "developer.build();",
-  ];
+// 1. Move Regex outside to avoid re-compilation on every render
+const CODE_REGEX = /(\b(?:const|return|import|from)\b|true|false|null|"[^"]*"|'[^']*'|<[A-Za-z][\w$]*|<\/[A-Za-z][\w$]*>|<\/?>|\{|\}|\[|\]|\(|\)|\.[a-zA-Z_$][\w$]*\(|=[^{}[\]"' ]*)/g;
 
 const highlightCode = (line) => {
+  if (!line.trim()) return line;
   if (line.trim().startsWith("//")) {
     return <span className="text-slate-500 italic">{line}</span>;
   }
 
-  return line.split(/(".*?"|\{.*?\}|\[.*?\]|<.*?>)/g).map((part, i) => {
-    if (!part) return null;
+  const parts = line.split(CODE_REGEX);
 
-    // Strings
-    if (part.startsWith('"') || part.startsWith("'")) {
-      return <span key={i} className="text-orange-300">{part}</span>;
+  return parts.filter(Boolean).map((part, i) => {
+    if (/^\s+$/.test(part)) return part;
+    if (/^(const|return|import|from)$/.test(part)) return <span key={i} className="text-pink-400 font-medium">{part}</span>;
+    if (/^["'].*["']$/.test(part)) return <span key={i} className="text-orange-300">{part}</span>;
+    if (/^(true|false|null)$/.test(part)) return <span key={i} className="text-emerald-400">{part}</span>;
+    if (/^<[A-Za-z][\w$]*\/?$/.test(part) || part === "/>" || /^<\/[A-Za-z][\w$]*>$/.test(part)) {
+      return <span key={i} className="text-cyan-400 font-medium">{part}</span>;
     }
-
-    // JSX tags
-    if (part.startsWith("<") && part.endsWith(">")) {
-      return <span key={i} className="text-cyan-400">{part}</span>;
+    if (/^[{}[\]()]$/.test(part) || part === "=") return <span key={i} className="text-violet-300">{part}</span>;
+    if (/^\.[a-zA-Z_$][\w$]*\($/.test(part) || /^[A-Z][a-zA-Z]*$/.test(part)) {
+      return <span key={i} className="text-cyan-300 font-medium">{part}</span>;
     }
-
-    // Booleans
-    if (part.includes("true") || part.includes("false")) {
-      return <span key={i} className="text-green-400">{part}</span>;
-    }
-
-    // Keywords
-    if (["const", "return", "import", "from"].includes(part.trim())) {
-      return <span key={i} className="text-red-400">{part}</span>;
-    }
-
-    // Functions
-    if (part.includes("build()")) {
-      return <span key={i} className="text-cyan-400">{part}</span>;
-    }
-
-    // Everything else
-    return <span key={i}>{part}</span>;
+    return <span key={i} className="text-slate-200">{part}</span>;
   });
 };
 
+const EditorCard = () => {
+    const handleScroll = () => {
+    const element = document.getElementById("work");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  // 2. Memoize the static code lines so highlighting happens ONLY ONCE
+  const renderedLines = React.useMemo(() => {
+    const lines = [
+      "// Welcome to my workspace",
+      "import { Developer } from './universe';",
+      "",
+      "const Portfolio = () => {",
+      "  return (",
+      "    <Developer",
+      '      name="Mehadi Hasan"',
+      '      role="Full Stack Developer"',
+      '      skills=["React", "Node", "MongoDB"]',
+      "      passionate={true}",
+      "    />",
+      "  );",
+      "};",
+      "developer.build();",
+    ];
+    return lines.map((line, index) => ({
+      id: index,
+      content: highlightCode(line)
+    }));
+  }, []);
+
   return (
-    <Card className="w-full max-w-xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl overflow-hidden">
+    <Card className="w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-xl sm:rounded-2xl overflow-hidden transform-gpu will-change-transform">
       {/* Header */}
-      <CardHeader className="flex justify-between items-center px-4 py-3 border-b border-white/10">
+      <CardHeader className="flex flex-row justify-between items-center px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10">
         <div className="flex gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-red-500"></span>
-          <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-          <span className="w-3 h-3 rounded-full bg-green-500"></span>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]"></span>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]"></span>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]"></span>
         </div>
-        <span className="text-xs text-slate-400 font-mono">portfolio.tsx</span>
+        <span className="text-[10px] sm:text-xs text-slate-400 font-mono">portfolio.tsx</span>
       </CardHeader>
 
-      {/* Code */}
-      <CardContent className="p-6 font-mono text-sm text-slate-200 space-y-1 overflow-x-auto">
-        {codeLines.map((line, index) => (
-          <div key={index} className="flex gap-3">
-            <span className="w-6 text-slate-500 text-right select-none">{index + 1}</span>
-            <span className="whitespace-pre">{highlightCode(line)}</span>
+      {/* Content - Optimized with static rendering */}
+      <CardContent className="p-3 sm:p-5 font-mono text-[10px] sm:text-xs md:text-sm text-slate-200 space-y-1 overflow-x-auto min-h-[300px]">
+        {renderedLines.map((line) => (
+          <div key={line.id} className="flex gap-3">
+            <span className="w-6 text-slate-600 text-right select-none">{line.id + 1}</span>
+            <span className="whitespace-pre flex-1">{line.content}</span>
           </div>
         ))}
       </CardContent>
 
-      {/* Buttons */}
-      <CardFooter className="flex gap-4 mt-2">
-        <Button className="bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 hover:border-amber-400/50">
-          Run Profile
+      {/* Footer */}
+      <CardFooter className="flex flex-col sm:flex-row gap-3 p-4 md:p-6">
+        <Button className="w-full sm:w-auto bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 active:scale-95 transition-all">
+          <Play className="w-4 h-4 mr-2" /> Run Profile
         </Button>
-        <Button className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 hover:border-emerald-400/50">
-          View Projects
+        <Button onClick={handleScroll} className="w-full sm:w-auto bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 active:scale-95 transition-all">
+          <FolderGit2 className="w-4 h-4 mr-2" /> View Projects
         </Button>
       </CardFooter>
     </Card>
   );
 };
 
-export default EditorCard;
-
-// import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-// import { Button } from "@/components/ui/button";
-
-// const EditorCard = () => {
-//   const codeLines = [
-//     { line: 1, content: "// Welcome to my workspace" },
-//     { line: 2, content: "import { Developer } from './universe';" },
-//     { line: 3, content: "" },
-//     { line: 4, content: "const Portfolio = () => {" },
-//     { line: 5, content: "  return (" },
-//     { line: 6, content: "    <Developer" },
-//     { line: 7, content: '      name="Mehadi Hasan"' },
-//     { line: 8, content: '      role="Full Stack Engineer"' },
-//     { line: 9, content: '      passion="Beyond Boundaries"' },
-//     { line: 10, content: "    />" },
-//     { line: 11, content: "  );" },
-//     { line: 12, content: "};" },
-//   ];
-
-//   const highlightCode = (text) => {
-//     if (text.startsWith("//")) return <span className="text-slate-500 italic">{text}</span>;
-
-//     return text.split(/("[^"]*")/).map((part, i) => {
-//       if (part.startsWith('"')) return <span key={i} className="text-emerald-400">{part}</span>;
-//       if (["const", "import", "from", "return"].includes(part.trim())) {
-//         return <span key={i} className="text-purple-400">{part}</span>;
-//       }
-//       return part;
-//     });
-//   };
-
-//   return (
-//     <Card className="w-full gap-1 max-w-xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl overflow-hidden">
-//       {/* Header */}
-//       <CardHeader className="flex flex-row items-center justify-between px-4 py-3 border-b border-white/10">
-//         <div className="flex gap-1.5 sm:gap-2">
-//           <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500"></span>
-//           <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500"></span>
-//           <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500"></span>
-//         </div>
-//         <span className="text-[10px] sm:text-xs text-slate-400 font-mono">portfolio.tsx</span>
-//         <div className="w-8 sm:w-10"></div>
-//       </CardHeader>
-
-//       {/* Code Section - Added overflow-x-auto and custom scrollbar */}
-//       <CardContent className="p-4 sm:p-6 font-mono text-xs sm:text-sm text-slate-200 space-y-1 overflow-x-auto scrollbar-thin scrollbar-thumb-white/10">
-//         {codeLines.map((line) => (
-//           <div key={line.line} className="flex gap-3 sm:gap-4 min-w-fit">
-//             <span className="w-4 shrink-0 text-slate-600 select-none text-right">
-//               {line.line}
-//             </span>
-//             <span className="whitespace-pre">
-//               {highlightCode(line.content)}
-//             </span>
-//           </div>
-//         ))}
-//       </CardContent>
-
-//       {/* Buttons - Added flex-wrap and better padding */}
-//       <CardFooter className="flex flex-wrap gap-3 sm:gap-4 p-4 sm:p-6 pt-0">
-//         <Button className="flex-1 sm:flex-none bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 hover:border-amber-400/50 text-xs sm:text-sm">
-//           Run Profile
-//         </Button>
-//         <Button className="flex-1 sm:flex-none bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 hover:border-emerald-400/50 text-xs sm:text-sm">
-//           View Projects
-//         </Button>
-//       </CardFooter>
-//     </Card>
-//   );
-// };
-
-// export default EditorCard;
+export default React.memo(EditorCard);
